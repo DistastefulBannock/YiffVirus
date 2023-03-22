@@ -1,11 +1,14 @@
 package me.bannock.virus;
 
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 import me.bannock.virus.images.ImageProviderService;
 import me.bannock.virus.images.impl.TestImageProviderService;
 import me.bannock.virus.images.impl.YiffProviderService;
 
 import javax.swing.JFrame;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.util.Arrays;
 
@@ -19,10 +22,14 @@ public class YiffVirus extends JFrame {
      * @throws HeadlessException Whenever it feels like it
      */
     public YiffVirus() throws HeadlessException {
-        setSize(350, 350);
-        setVisible(true);
+        setSize(450, 450);
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Yiff Virus");
+
+        setContentPane(new VirusSetupForm(config).getForm());
+
+        setVisible(true);
     }
 
     /**
@@ -32,6 +39,7 @@ public class YiffVirus extends JFrame {
     public static void main(String[] args) {
 
         // Create virus
+        FlatDarculaLaf.setup();
         YiffVirus yiffVirus = new YiffVirus();
 
         // Show the gui if the user wants a gui, autoload if the user configured it to autoload

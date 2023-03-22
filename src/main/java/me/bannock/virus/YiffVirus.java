@@ -2,15 +2,17 @@ package me.bannock.virus;
 
 
 import me.bannock.virus.images.ImageProviderService;
+import me.bannock.virus.images.impl.TestImageProviderService;
 import me.bannock.virus.images.impl.YiffProviderService;
 
 import javax.swing.JFrame;
 import java.awt.HeadlessException;
+import java.util.Arrays;
 
 public class YiffVirus extends JFrame {
 
     private Config config = new Config();
-    private ImageProviderService yiffService = new YiffProviderService();
+    private final ImageProviderService imageProviderService = new TestImageProviderService();
 
     /**
      * Creates a new gui window
@@ -38,7 +40,6 @@ public class YiffVirus extends JFrame {
             switch(arg.toLowerCase()){
                 case "-autoload":{
                     showGui = false;
-                    System.out.println();
                     // TODO: Auto load config and run virus
                 }break;
             }
@@ -54,4 +55,7 @@ public class YiffVirus extends JFrame {
         this.config = config;
     }
 
+    public ImageProviderService getImageProviderService() {
+        return imageProviderService;
+    }
 }

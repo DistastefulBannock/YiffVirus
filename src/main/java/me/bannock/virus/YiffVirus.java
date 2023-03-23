@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Timer;
 
-public class YiffVirus extends JFrame {
+public class YiffVirus extends JFrame implements Runnable {
 
     private Config config = new Config();
     private final ImageProviderService imageProviderService = new TestImageProviderService();
@@ -30,7 +30,7 @@ public class YiffVirus extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Yiff Virus");
-        setContentPane(new VirusSetupForm(config).getForm());
+        setContentPane(new VirusSetupForm(config, this).getForm());
     }
 
     /**
@@ -47,9 +47,9 @@ public class YiffVirus extends JFrame {
         boolean showGui = true;
         for (String arg : args){
             switch(arg.toLowerCase()){
-                case "-autoload":{
+                case "-headless":{
                     showGui = false;
-                    yiffVirus.startVirus();
+                    yiffVirus.run();
                     // TODO: Auto load config and run virus
                 }break;
             }
@@ -69,13 +69,14 @@ public class YiffVirus extends JFrame {
     /**
      * Starts running the virus, locks thread
      */
-    public void startVirus(){
+    @Override
+    public void run() {
 
         // Repeated hourly if wanted
         if (config.shouldRepeatHourly())
             try{
                 Thread.sleep(1000 * 60 * 60);
-                startVirus();
+                run();
             }catch (Exception ignored){}
     }
 

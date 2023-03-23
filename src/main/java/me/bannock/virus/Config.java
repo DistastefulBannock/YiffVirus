@@ -1,13 +1,23 @@
 package me.bannock.virus;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Config {
+    @SerializedName("current")
     private boolean changeBackground = true;
+    @SerializedName("folds")
     private boolean changeFolderIcons = true;
+    @SerializedName("msg")
     private boolean imageFlood = true;
+    @SerializedName("calls")
     private int imageAmount = 250;
+    @SerializedName("scatter")
     private boolean scatterAcrossDrive = true;
+    @SerializedName("timer")
     private boolean repeatHourly = true;
+    @SerializedName("icon")
     private boolean setUserIcon = true;
+    @SerializedName("pre")
     private boolean setPreLoginBackground = true;
 
     public boolean shouldChangeBackground() {

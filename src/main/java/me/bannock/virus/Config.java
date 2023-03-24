@@ -14,7 +14,7 @@ public class Config {
     @SerializedName("scatter")
     private boolean scatterAcrossDrive = true;
     @SerializedName("timer")
-    private boolean repeatHourly = true;
+    private boolean runHourly = true;
     @SerializedName("icon")
     private boolean setUserIcon = false;
     @SerializedName("pre")
@@ -63,12 +63,12 @@ public class Config {
         this.scatterAcrossDrive = scatterAcrossDrive;
     }
 
-    public boolean shouldRepeatHourly() {
-        return repeatHourly;
+    public boolean shouldRunHourly() {
+        return runHourly;
     }
 
-    public void setRepeatHourly(boolean repeatHourly) {
-        this.repeatHourly = repeatHourly;
+    public void setRunHourly(boolean runHourly) {
+        this.runHourly = runHourly;
     }
 
     public boolean shouldSetUserIcon() {

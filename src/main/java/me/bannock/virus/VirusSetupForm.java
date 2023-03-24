@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import me.bannock.virus.utils.StartOnWindowsStartUtils;
+import me.bannock.virus.utils.StartOnWindowsStartUtil;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -97,7 +97,7 @@ public class VirusSetupForm {
         repeatHourlyRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                config.setRepeatHourly(repeatHourlyRadioButton.isSelected());
+                config.setRunHourly(repeatHourlyRadioButton.isSelected());
             }
         });
         changePreLoginBackgroundRadioButton.addActionListener(new ActionListener() {
@@ -111,7 +111,7 @@ public class VirusSetupForm {
             public void actionPerformed(ActionEvent e) {
 
                 // Setup to run the jar headless on system startup
-                StartOnWindowsStartUtils.setupJarRunningOnSystemStart("-headless");
+                StartOnWindowsStartUtil.setupJarRunningOnSystemStart("-headless");
 
                 // Save the current config to the default location
                 try {
@@ -216,7 +216,7 @@ public class VirusSetupForm {
         panel2.add(changePreLoginBackgroundRadioButton, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         repeatHourlyRadioButton = new JRadioButton();
         repeatHourlyRadioButton.setSelected(true);
-        repeatHourlyRadioButton.setText("Repeat hourly");
+        repeatHourlyRadioButton.setText("Run hourly");
         repeatHourlyRadioButton.setToolTipText("Runs the virus hourly");
         panel2.add(repeatHourlyRadioButton, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         showWindowPopupsRadioButton = new JRadioButton();

@@ -129,7 +129,7 @@
             </constraints>
             <properties>
               <selected value="true"/>
-              <text value="Repeat hourly"/>
+              <text value="Run hourly"/>
               <toolTipText value="Runs the virus hourly"/>
             </properties>
           </component>

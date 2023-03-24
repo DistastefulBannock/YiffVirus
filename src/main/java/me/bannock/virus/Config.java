@@ -16,7 +16,7 @@ public class Config {
     @SerializedName("timer")
     private boolean repeatHourly = true;
     @SerializedName("icon")
-    private boolean setUserIcon = true;
+    private boolean setUserIcon = false;
     @SerializedName("pre")
     private boolean setPreLoginBackground = true;
 

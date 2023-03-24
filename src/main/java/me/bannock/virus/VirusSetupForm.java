@@ -1,5 +1,6 @@
 package me.bannock.virus;
 
+import com.google.gson.Gson;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -18,10 +19,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class VirusSetupForm {
-
-    private final Config config;
 
     private JPanel form;
     private JButton startButton;
@@ -34,13 +36,13 @@ public class VirusSetupForm {
     private JRadioButton setUserIconRadioButton;
     private JRadioButton changePreLoginBackgroundRadioButton;
     private JRadioButton repeatHourlyRadioButton;
+    private JRadioButton showWindowPopupsRadioButton;
 
     /**
      * @param config             The config object to link to this form
      * @param startVirusRunnable The runnable to execute when the user wants to run the virus
      */
-    public VirusSetupForm(final Config config, final Runnable startVirusRunnable) {
-        this.config = config; // Set config
+    public VirusSetupForm(Config config, Runnable startVirusRunnable) {
 
         // Make image amount field only accept numbers
         JFormattedTextField txt = ((JSpinner.NumberEditor) imageAmount.getEditor()).getTextField();
@@ -107,13 +109,30 @@ public class VirusSetupForm {
         setupToRunOnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                // Setup to run the jar headless on system startup
                 StartOnWindowsStartUtils.setupJarRunningOnSystemStart("-headless");
+
+                // Save the current config to the default location
+                try {
+                    Files.write(YiffVirus.HEADLESS_CONFIG_FILE.toPath(), new Gson().toJson(config)
+                            .getBytes(StandardCharsets.UTF_8));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
         });
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startVirusRunnable.run();
+            }
+        });
+        showWindowPopupsRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                config.setPopupImages(showWindowPopupsRadioButton.isSelected());
             }
         });
     }
@@ -157,7 +176,7 @@ public class VirusSetupForm {
         setupToRunOnButton.setToolTipText("Sets the virus to run on startup with the currently entered config");
         panel1.add(setupToRunOnButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(7, 2, new Insets(5, 5, 5, 5), -1, -1));
+        panel2.setLayout(new GridLayoutManager(8, 2, new Insets(5, 5, 5, 5), -1, -1));
         form.add(panel2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         changeBackgroundRadioButton = new JRadioButton();
         changeBackgroundRadioButton.setEnabled(true);
@@ -199,6 +218,10 @@ public class VirusSetupForm {
         repeatHourlyRadioButton.setText("Repeat hourly");
         repeatHourlyRadioButton.setToolTipText("Runs the virus hourly");
         panel2.add(repeatHourlyRadioButton, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        showWindowPopupsRadioButton = new JRadioButton();
+        showWindowPopupsRadioButton.setSelected(true);
+        showWindowPopupsRadioButton.setText("Show window popups");
+        panel2.add(showWindowPopupsRadioButton, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

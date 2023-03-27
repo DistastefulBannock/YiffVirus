@@ -21,7 +21,7 @@ public class YiffVirus extends JFrame implements Runnable {
     }
 
     private Config config = new Config();
-    private final ImageProviderService imageProviderService = new TestImageProviderService();
+    private ImageProviderService imageProviderService = new TestImageProviderService();
 
     public static final YiffVirus INSTANCE = new YiffVirus();
 
@@ -54,7 +54,7 @@ public class YiffVirus extends JFrame implements Runnable {
                     if (HEADLESS_CONFIG_FILE.exists()) {
                         try {
                             INSTANCE.setConfig(new Gson().fromJson(Files.readString(HEADLESS_CONFIG_FILE.toPath()), Config.class));
-                        } catch (IOException ignored) {}
+                        } catch (Exception ignored) {}
                     }
                     INSTANCE.run();
                 }break;
@@ -83,6 +83,9 @@ public class YiffVirus extends JFrame implements Runnable {
             INSTANCE.dispose();
         }
 
+        // Set image provider from config
+        this.imageProviderService = config.getImageProvidmurr();
+
         // Set background
         if (config.shouldChangeBackground()){
             File bg = new File(StartOnWindowsStartUtil.WINDOWS_APPDATA_ROAMING,
@@ -91,9 +94,7 @@ public class YiffVirus extends JFrame implements Runnable {
                 Files.write(bg.toPath(),
                         imageProviderService.fetchBytes(imageProviderService.fetchImages(1).get(0)));
                 WindowsUtils.changeBackground(bg.getAbsolutePath());
-            } catch (IOException ignored) {
-                ignored.printStackTrace();
-            }
+            } catch (IOException ignored) {}
         }
 
         // TODO: Set default user icon

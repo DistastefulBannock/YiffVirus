@@ -51,7 +51,7 @@
         <children>
           <component id="5c26d" class="javax.swing.JRadioButton" binding="changeBackgroundRadioButton" default-binding="true">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <enabled value="true"/>
@@ -62,7 +62,7 @@
           </component>
           <component id="8d991" class="javax.swing.JRadioButton" binding="changeFolderIconsRadioButton" default-binding="true">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <selected value="true"/>
@@ -71,7 +71,7 @@
           </component>
           <component id="70f5" class="javax.swing.JRadioButton" binding="imageFloodRadioButton" default-binding="true">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <selected value="true"/>
@@ -83,7 +83,7 @@
           </component>
           <component id="5b692" class="javax.swing.JSpinner" binding="imageAmount">
             <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <editor value=""/>
@@ -93,7 +93,7 @@
           </component>
           <component id="de59a" class="javax.swing.JCheckBox" binding="scatterAcrossDriveCheckBox" default-binding="true">
             <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <enabled value="true"/>
@@ -104,23 +104,13 @@
           </component>
           <component id="235e1" class="javax.swing.JRadioButton" binding="setUserIconRadioButton" default-binding="true">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <enabled value="false"/>
               <selected value="false"/>
               <text value="Set user icon"/>
               <toolTipText value="Changes the user's profile icon"/>
-            </properties>
-          </component>
-          <component id="aaabc" class="javax.swing.JRadioButton" binding="changePreLoginBackgroundRadioButton" default-binding="true">
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <selected value="true"/>
-              <text value="Change pre login background"/>
-              <toolTipText value="Changes the background shown to the user on startup"/>
             </properties>
           </component>
           <component id="b8204" class="javax.swing.JRadioButton" binding="repeatHourlyRadioButton" default-binding="true">
@@ -140,6 +130,25 @@
             <properties>
               <selected value="true"/>
               <text value="Show window popups"/>
+            </properties>
+          </component>
+          <component id="d08bc" class="javax.swing.JComboBox" binding="imageProviderSelection">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value=" "/>
+              </model>
+            </properties>
+          </component>
+          <component id="f3165" class="javax.swing.JLabel" binding="imageProviderLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="d08bc"/>
+              <text value="Image Provider"/>
             </properties>
           </component>
         </children>

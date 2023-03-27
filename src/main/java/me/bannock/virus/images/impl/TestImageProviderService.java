@@ -6,13 +6,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestImageProviderService implements ImageProviderService {
 
     @Override
     public List<String> fetchImages(int count) {
-        return List.of("test.png");
+        ArrayList<String> images = new ArrayList<>();
+        for (int i = 0; i < count; i++)
+            images.add("test.png");
+        return images;
     }
 
     @Override

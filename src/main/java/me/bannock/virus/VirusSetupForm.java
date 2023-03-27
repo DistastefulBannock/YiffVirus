@@ -21,6 +21,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
 import java.awt.Component;
 import java.awt.Insets;
@@ -103,15 +105,13 @@ public class VirusSetupForm {
                 config.setScatterAcrossDrive(scatterAcrossDriveCheckBox.isSelected());
             }
         });
-        imageAmount.addInputMethodListener(new InputMethodListener() {
+        imageAmount.addChangeListener(new ChangeListener() {
             @Override
-            public void inputMethodTextChanged(InputMethodEvent event) {
+            public void stateChanged(ChangeEvent e) {
+                System.out.println(imageAmount.getValue().toString());
                 config.setImageAmount(Integer.parseInt(imageAmount.getValue().toString()));
             }
 
-            @Override
-            public void caretPositionChanged(InputMethodEvent event) {
-            }
         });
         changeFolderIconsRadioButton.addActionListener(new ActionListener() {
             @Override

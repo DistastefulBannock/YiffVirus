@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is a test class, don't bother updating it. It's not to be maintained or used
+ */
 public class TestImageProviderService implements ImageProviderService {
 
     @Override

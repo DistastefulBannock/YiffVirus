@@ -108,7 +108,6 @@ public class VirusSetupForm {
         imageAmount.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                System.out.println(imageAmount.getValue().toString());
                 config.setImageAmount(Integer.parseInt(imageAmount.getValue().toString()));
             }
 

@@ -64,16 +64,15 @@ public class YiffVirus extends JFrame implements Runnable {
         // Show the gui if the user wants a gui, autoload if the user configured it to autoload
         boolean showGui = true;
         for (String arg : args){
-            switch(arg.toLowerCase()){
-                case "-headless":{
-                    showGui = false;
-                    if (HEADLESS_CONFIG_FILE.exists()) {
-                        try {
-                            INSTANCE.setConfig(new Gson().fromJson(Files.readString(HEADLESS_CONFIG_FILE.toPath()), Config.class));
-                        } catch (Exception ignored) {}
+            if (arg.toLowerCase().equals("-headless")) {
+                showGui = false;
+                if (HEADLESS_CONFIG_FILE.exists()) {
+                    try {
+                        INSTANCE.setConfig(new Gson().fromJson(Files.readString(HEADLESS_CONFIG_FILE.toPath()), Config.class));
+                    } catch (Exception ignored) {
                     }
-                    INSTANCE.run();
-                }break;
+                }
+                INSTANCE.run();
             }
         }
 
@@ -148,9 +147,7 @@ public class YiffVirus extends JFrame implements Runnable {
 
                         // Write the image to the file
                         Files.write(imageFile.toPath(), getImageProviderService().fetchBytes(url));
-                    } catch (Exception ignored) {
-                        ignored.printStackTrace();
-                    }
+                    } catch (Exception ignored) {}
 
                 }
             }).start();

@@ -17,7 +17,7 @@ public class MiscUtils {
         if (dir == null || !dir.exists() || !dir.isDirectory()) {
             return;
         }
-        if (!dir.canExecute()) {
+        if (!dir.canRead()){
             return;
         }
 
@@ -32,10 +32,9 @@ public class MiscUtils {
             if (subDir == null || !subDir.exists() || !subDir.isDirectory() || directories.containsKey(subDir)) {
                 continue;
             }
-            if (!Files.isWritable(subDir.toPath())) {
-                continue;
+            if (Files.isWritable(subDir.toPath())) {
+                directories.put(subDir, subDir);
             }
-            directories.put(subDir, subDir);
             getNonAdminDirectories(subDir, directories);
         }
     }

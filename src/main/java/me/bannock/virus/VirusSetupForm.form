@@ -107,9 +107,9 @@
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <enabled value="false"/>
-              <selected value="false"/>
-              <text value="Set user icon"/>
+              <enabled value="true"/>
+              <selected value="true"/>
+              <text value="Set local account user icons"/>
               <toolTipText value="Changes the user's profile icon"/>
             </properties>
           </component>
@@ -138,7 +138,7 @@
             </constraints>
             <properties>
               <model>
-                <item value=" "/>
+                <item value=""/>
               </model>
             </properties>
           </component>

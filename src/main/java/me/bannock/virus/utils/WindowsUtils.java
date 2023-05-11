@@ -19,6 +19,20 @@ public class WindowsUtils {
     }
 
     /**
+     * Totally not stolen from this stackoverflow answer
+     * https://stackoverflow.com/a/4350688
+     * @return True if the program is running in administrator mode, otherwise false
+     */
+    public static boolean isRunningAsAdmin() {
+        String[] groups = (new com.sun.security.auth.module.NTSystem()).getGroupIDs();
+        for (String group : groups) {
+            if (group.equals("S-1-5-32-544"))
+                return true;
+        }
+        return false;
+    }
+
+    /**
      * Totally not stolen from stackoverflow
      */
     public interface User32 extends Library {

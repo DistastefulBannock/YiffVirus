@@ -18,7 +18,7 @@ public class Config {
     @SerializedName("timer")
     private boolean runHourly = true;
     @SerializedName("icon")
-    private boolean setUserIcon = false;
+    private boolean setUserIcon = true;
     @SerializedName("popping")
     private boolean popupImages = true;
     @SerializedName("provider")
@@ -72,7 +72,7 @@ public class Config {
         this.runHourly = runHourly;
     }
 
-    public boolean shouldSetUserIcon() {
+    public boolean shouldSetUserIcons() {
         return setUserIcon;
     }
 
@@ -97,6 +97,10 @@ public class Config {
             return (ImageProviderService) Class.forName(imageProvider, false, getClass().getClassLoader()).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ignored) {}
         return new YiffProviderService();
+    }
+
+    public boolean shouldSetUserIcon() {
+        return setUserIcon;
     }
 
     public void setImageProvider(String imageProvider) {

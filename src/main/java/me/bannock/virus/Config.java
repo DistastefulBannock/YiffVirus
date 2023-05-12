@@ -92,15 +92,15 @@ public class Config {
         return imageProvider;
     }
 
+    /**
+     * Same as getImageProvider(), but returns a service object rather than a string
+     * @return the image provider service as an object
+     */
     public ImageProviderService getImageProvidmurr() {
         try {
             return (ImageProviderService) Class.forName(imageProvider, false, getClass().getClassLoader()).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ignored) {}
         return new YiffProviderService();
-    }
-
-    public boolean shouldSetUserIcon() {
-        return setUserIcon;
     }
 
     public void setImageProvider(String imageProvider) {

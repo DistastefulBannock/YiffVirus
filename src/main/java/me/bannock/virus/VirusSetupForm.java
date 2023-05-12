@@ -21,10 +21,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -245,6 +247,9 @@ public class VirusSetupForm {
         imageProviderLabel = new JLabel();
         imageProviderLabel.setText("Image Provider");
         panel2.add(imageProviderLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setText("Requires administrator privileges");
+        panel2.add(label1, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         imageProviderLabel.setLabelFor(imageProviderSelection);
     }
 

